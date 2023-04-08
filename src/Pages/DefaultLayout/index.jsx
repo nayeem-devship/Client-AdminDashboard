@@ -14,16 +14,14 @@ function DefaultLayout() {
   return (
     <div onChange={handleChange}>
       <NavBar />
-      <Box>
+      <Box sx={{backgroundColor: "whitesmoke"}}>
         <div>
           <SideBar />
         </div>
         <div
           className={collapsed === true ? "main_content open" : "main-content"}
         >
-        <Container fixed>
           <Outlet />
-        </Container>
         </div>
       </Box>
     </div>

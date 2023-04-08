@@ -1,10 +1,18 @@
-import { Box, IconButton, Tooltip, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  IconButton,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 import React, { useState, useEffect } from "react";
 import Api from "../../Api";
 import { confirmAlert } from "react-confirm-alert";
+import "./UserList.css";
 
 function userList() {
   const [userList, setUserList] = useState([]);
@@ -52,6 +60,20 @@ function userList() {
     { field: "lastName", headerName: "Last name", width: 130 },
     { field: "userName", headerName: "UserName", width: 200 },
     {
+      field: "status",
+      headerName: "Status",
+      width: 200,
+      courser: "pointer",
+      renderCell: (params) => {
+        const data = params.row.status;
+        return (
+          <div className={data === "ACTIVE" ? "Active-style" : "Block-style"}>
+            {data}
+          </div>
+        );
+      },
+    },
+    {
       field: "Action",
       fieldAlign: "center",
       headerName: "Action",
@@ -81,29 +103,35 @@ function userList() {
   ];
 
   return (
-    <Box>
-      <Typography variant="h5" sx={{ fontFamily: "poppins" }} component="div">
-        UserList
-      </Typography>
-      <Box sx={{ width: "100%", mt: 2 }}>
-        <DataGrid
-          rows={userList}
-          columns={columns}
-          getRowId={(row) => row._id}
-          initialState={{
-            pagination: {
-              paginationModel: {
-                pageSize: 6,
+    <Card sx={{ width: "100%", p: 3, minHeight: "450px" }}>
+      <Box>
+        <Typography variant="h5" sx={{ fontFamily: "poppins" }} component="div">
+          UserList
+        </Typography>
+        <Box sx={{ width: "100%", mt: 1 }}>
+          <Button sx={{ mb: 2, px: 2 }} variant="contained" size="small">
+            {"+"} Add
+          </Button>
+          <DataGrid
+            rows={userList}
+            columns={columns}
+            getRowId={(row) => row._id}
+            initialState={{
+              pagination: {
+                paginationModel: {
+                  pageSize: 6,
+                },
               },
-            },
-          }}
-          pageSizeOptions={[5]}
-          checkboxSelection
-          disableRowSelectionOnClick
-          autoHeight
-        />
+            }}
+            sx={{borderRadius:"2px"}}
+            pageSizeOptions={[5]}
+            checkboxSelection
+            disableRowSelectionOnClick
+            autoHeight
+          />
+        </Box>
       </Box>
-    </Box>
+    </Card>
   );
 }
 

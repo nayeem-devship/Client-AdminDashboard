@@ -1,0 +1,17 @@
+.Active-Style{
+    color: green;
+    border: 2px Solid green;
+    padding: 2%;
+    font-size: small;
+    width: 73px;
+    text-align: center;
+}
+
+.Block-Style{
+    color: red;
+    border: 2px Solid red;
+    padding: 2%;
+    font-size: small;
+    width: 73px;
+    text-align: center;
+}
