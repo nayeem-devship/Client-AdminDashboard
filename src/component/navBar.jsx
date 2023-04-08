@@ -8,9 +8,13 @@ import MenuIcon from "@mui/icons-material/Menu";
 import AccountCircle from "@mui/icons-material/AccountCircle";
 import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
+import { useNavigate } from "react-router-dom";
 
 export default function navBar() {
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [logout, setLogout] = React.useState(false);
+
+  const navigate = useNavigate();
 
   const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
@@ -20,8 +24,25 @@ export default function navBar() {
     setAnchorEl(null);
   };
 
+  const userName = localStorage.getItem("userName")
+
+  React.useEffect(() => {
+    if(!localStorage.getItem("USER_AUTH_STATE")) navigate("/")
+  }, [logout])
+
+  const logoutHandler = (e) =>{
+    e.preventDefault();
+    localStorage.removeItem("USER_AUTH_STATE");
+    localStorage.removeItem("user-token");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("id");
+    navigate("/")
+    setLogout(true);
+  };
+  
+
   return (
-    <Box sx={{ flexGrow: 1 }}>
+    <Box sx={{ flexGrow: 1}}>
       <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
         <Toolbar>
           <IconButton
@@ -80,8 +101,8 @@ export default function navBar() {
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
-                <MenuItem onClick={handleClose}>Logout</MenuItem>
+                <MenuItem onClick={handleClose}>{userName}</MenuItem>
+                <MenuItem onClick={logoutHandler}>Logout</MenuItem>
               </Menu>
             </div>
         </Toolbar>

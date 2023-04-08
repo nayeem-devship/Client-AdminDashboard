@@ -4,7 +4,9 @@ import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import { NavLink } from "react-router-dom";
 import { AssignmentInd, ListAltOutlined } from "@mui/icons-material";
+import PropTypes from 'prop-types';
 import "./sideBar.css";
+import NavBar from "./navBar";
 
 const drawerWidth = 240;
 
@@ -34,6 +36,7 @@ function sideBar(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
+      {/* <NavBar/> */}
       <Drawer
         container={container}
         variant="temporary"
@@ -72,5 +75,13 @@ function sideBar(props) {
     </Box>
   );
 }
+
+sideBar.propTypes = {
+    /**
+     * Injected by the documentation to work in an iframe.
+     * You won't need it on your project.
+     */
+    window: PropTypes.func,
+  };
 
 export default sideBar;

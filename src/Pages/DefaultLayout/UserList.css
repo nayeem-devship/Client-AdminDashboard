@@ -1,17 +1,21 @@
-.Active-Style{
-    color: green;
-    border: 2px Solid green;
-    padding: 2%;
-    font-size: small;
-    width: 73px;
+.activeStyle{
+    color: #1b5e20;
+    background-color: #c8e6c9;
+    border-radius: 5px;
+    padding: 1%;
+    font-size: smaller;
+    font-family: poppins;
+    width: 60px;
     text-align: center;
 }
 
-.Block-Style{
+.blockStyle{
     color: red;
-    border: 2px Solid red;
-    padding: 2%;
-    font-size: small;
-    width: 73px;
+    background-color:#ffcdd2;
+    border-radius: 5px;
+    padding: 1%;
+    font-size: smaller;
+    font-family: poppins;
+    width: 60px;
     text-align: center;
 }

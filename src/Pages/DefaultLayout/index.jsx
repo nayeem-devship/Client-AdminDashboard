@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import NavBar from "../../component/navBar";
 import SideBar from "../../component/sideBar";
 import { Outlet } from "react-router-dom";
-import { Box, Container, Toolbar } from "@mui/material";
+import { Box } from "@mui/material";
 import "../../component/sideBar.css";
 
 function DefaultLayout() {
@@ -12,7 +12,7 @@ function DefaultLayout() {
   };
 
   return (
-    <div onChange={handleChange}>
+    <div onChange={()=>handleChange()}>
       <NavBar />
       <Box sx={{backgroundColor: "whitesmoke"}}>
         <div>

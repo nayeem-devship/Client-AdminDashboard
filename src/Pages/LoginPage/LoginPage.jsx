@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import 'react-toastify/dist/ReactToastify.css';
+import "react-toastify/dist/ReactToastify.css";
 import "./LoginPage.css";
 import {
   Avatar,
@@ -26,7 +26,6 @@ import { ToastContainer, toast } from "react-toastify";
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
-  const [res, setRes] = useState();
 
   const navigate = useNavigate();
 
@@ -48,12 +47,9 @@ function LoginPage() {
     };
     await Api.post(`user/login`, userDetails)
       .then((response) => {
-        console.log("response@2127", response);
-        if(response.status === 200)
-        {
+        if (response.status === 200) {
           toast.success("User Login Successfully");
         }
-
         if (response.data.token) {
           const token = response.data.token;
           const userName = response.data.userName;
@@ -69,43 +65,42 @@ function LoginPage() {
         }
       })
       .catch((err) => {
-        if(err.response.status === 400){
-          toast.error("incorrect Password")
-        }
-        else{
-          toast.error("User not found")
+        if (err.response.status === 400) {
+          toast.error("incorrect Password");
+        } else {
+          toast.error("User not found");
         }
       });
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-    <Box className="login_Page">
-      <Card sx={{ p: "2rem", mx: "1rem" }}>
-      <ToastContainer/>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-          }}
-        >
-          <Avatar
+      <Box className="login_Page">
+        <Card sx={{ p: "2rem", mx: "1rem" }}>
+          <ToastContainer />
+          <Box
             sx={{
-              mx: 1,
-              bgcolor: "whitesmoke",
-              border: "2px solid gray",
-              height: "36px",
-              width: "36px",
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
             }}
           >
-            <ManageAccountsOutlined sx={{ color: "black" }} />
-          </Avatar>
-          <Typography sx={{ color: "inherit" }} variant="h5">
-            Login Page
-          </Typography>
-        </Box>
-       
+            <Avatar
+              sx={{
+                mx: 1,
+                bgcolor: "whitesmoke",
+                border: "2px solid gray",
+                height: "36px",
+                width: "36px",
+              }}
+            >
+              <ManageAccountsOutlined sx={{ color: "black" }} />
+            </Avatar>
+            <Typography sx={{ color: "inherit" }} variant="h5">
+              Login Page
+            </Typography>
+          </Box>
+
           <Box
             sx={{
               mt: 2,
@@ -176,8 +171,8 @@ function LoginPage() {
               Login
             </Button>
           </Box>
-      </Card>
-    </Box>
+        </Card>
+      </Box>
     </form>
   );
 }
