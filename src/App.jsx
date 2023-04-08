@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom';
 import DefaultLayout from './Pages/DefaultLayout';
 import AdminRoutes from './Routes/AdminRoutes';
 import { ProtectedRoute } from './Routes/ProtectedRoute';
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 function App() {
   return (
