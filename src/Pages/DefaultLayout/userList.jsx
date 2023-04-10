@@ -151,7 +151,6 @@ function userList() {
       })
   };
 
- 
   const columns = [
     { field: "firstName", headerName: "First name", width: 130 },
     { field: "lastName", headerName: "Last name", width: 130 },
