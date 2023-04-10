@@ -50,7 +50,7 @@ export default function navBar() {
             edge="start"
             color="inherit"
             aria-label="menu"
-            sx={{ mr: 2 }}
+            sx={{ mr: 2, display:{lg:'none', md:'none', sm:'none'} }}
           >
             <MenuIcon />
           </IconButton>
