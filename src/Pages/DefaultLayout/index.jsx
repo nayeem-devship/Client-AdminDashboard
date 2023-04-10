@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import NavBar from "../../component/navBar";
 import SideBar from "../../component/sideBar";
 import { Outlet } from "react-router-dom";
@@ -6,20 +6,16 @@ import { Box } from "@mui/material";
 import "../../component/sideBar.css";
 
 function DefaultLayout() {
-  const [collapsed, setCollapsed] = useState(true);
-  const handleChange = () => {
-    setCollapsed(!collapsed);
-  };
 
   return (
-    <div onChange={()=>handleChange()}>
+    <div>
       <NavBar />
       <Box sx={{backgroundColor: "whitesmoke"}}>
         <div>
           <SideBar />
         </div>
         <div
-          className={collapsed === true ? "main_content open" : "main-content"}
+          className= "main_content open"
         >
           <Outlet />
         </div>

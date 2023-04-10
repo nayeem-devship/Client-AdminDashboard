@@ -6,7 +6,6 @@ import { NavLink } from "react-router-dom";
 import { AssignmentInd, ListAltOutlined } from "@mui/icons-material";
 import PropTypes from 'prop-types';
 import "./sideBar.css";
-import NavBar from "./navBar";
 
 const drawerWidth = 240;
 
