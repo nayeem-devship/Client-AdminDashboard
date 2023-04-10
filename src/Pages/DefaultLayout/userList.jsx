@@ -97,7 +97,6 @@ function userList() {
   const onSubmit = (data) => {
     console.log(data);
     const userId = id;
-    console.log('userId@@', userId)
     if(userId === ""){
       createUser();
     }
@@ -106,8 +105,6 @@ function userList() {
     }
     return reset();
   };
-
-  console.log('id', id);
 
   const createUser = async () => {
     const userDetails = {
