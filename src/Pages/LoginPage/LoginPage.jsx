@@ -60,7 +60,7 @@ function LoginPage() {
           localStorage.setItem("userName", userName);
           localStorage.setItem("id", id);
 
-          navigate(`/admin`);
+          navigate(`/admin/userList`);
           sessionStorage.setItem("USER_AUTH_STATE", true);
         }
       })

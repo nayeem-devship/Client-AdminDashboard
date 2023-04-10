@@ -4,15 +4,15 @@ import SubUsers from "../Pages/DefaultLayout/subUsers";
 
 const adminRoutes = [
     {
-        path:"/admin",
-        name:"admin",
+        path:"userList",
+        name:"userList",
         element:<UserList/>
     },
     {
-        path:"SubUser",
+        path:"subUser",
         name:"SubUser",
         element:<SubUsers/>
-    }
+    },
 ]
 
 export default adminRoutes;

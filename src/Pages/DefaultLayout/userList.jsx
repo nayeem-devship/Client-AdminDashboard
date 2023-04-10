@@ -76,13 +76,38 @@ function userList() {
       .catch((err) => console.log(err));
   };
 
-  const onSubmit = () => {
-    if (id === id) {
-      updateUserData();
-    } else {
+  const submit = (_id) => {
+    confirmAlert({
+      title: "Are You Sure",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => {
+            deleteUserData(_id);
+            getUser();
+          },
+        },
+        {
+          label: "No",
+        },
+      ],
+    });
+  };
+
+  const onSubmit = (data) => {
+    console.log(data);
+    const userId = id;
+    console.log('userId@@', userId)
+    if(userId === ""){
       createUser();
     }
+    else{
+      updateUserData();
+    }
+    return reset();
   };
+
+  console.log('id', id);
 
   const createUser = async () => {
     const userDetails = {
@@ -100,7 +125,12 @@ function userList() {
       handleDialogeClose();
       reset();
       getUser();
-    });
+    })
+    .catch((err) => {
+      if(err.response.status === 409){
+        toast.error("User Already Exist");
+      }
+    })
   };
 
   const updateUserData = async () => {
@@ -122,30 +152,9 @@ function userList() {
         reset();
         handleDialogeClose();
       })
-      .catch((err) => {
-        if (err.response.status === 404) {
-          createUser();
-        }
-      });
   };
 
-  const submit = (_id) => {
-    confirmAlert({
-      title: "Are You Sure",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => {
-            deleteUserData(_id);
-          },
-        },
-        {
-          label: "No",
-        },
-      ],
-    });
-  };
-
+ 
   const columns = [
     { field: "firstName", headerName: "First name", width: 130 },
     { field: "lastName", headerName: "Last name", width: 130 },
@@ -191,7 +200,6 @@ function userList() {
                 <EditIcon sx={{ color: "#1b5e20" }} />
               </IconButton>
             </Tooltip>
-
             <div>
               <Tooltip title="Delete">
                 <IconButton

@@ -20,11 +20,11 @@ function sideBar(props) {
 
   const drawer = (
     <Box sx={{ mt: 10, pl:1 }}>
-      <NavLink to="UserList" className={({ isActive}) => isActive ? "nav_link active" : "nav_link"}>
+      <NavLink to="userList" className={({ isActive}) => isActive ? "nav_link active" : "nav_link"}>
         {" "}
         <AssignmentInd sx={{ mx: 2 }} /> UserList
       </NavLink>
-      <NavLink to="SubUser" className={({ isActive}) => isActive ? "nav_link active" : "nav_link"}>
+      <NavLink to="subUser" className={({ isActive}) => isActive ? "nav_link active" : "nav_link"}>
         {" "}
         <ListAltOutlined sx={{ mx: 2 }} /> SubUser
       </NavLink>
