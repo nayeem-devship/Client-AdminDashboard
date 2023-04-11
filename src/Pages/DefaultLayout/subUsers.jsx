@@ -32,28 +32,35 @@ function userList() {
   const [userList, setUserList] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [id, setId] = useState("");
-  const [checked, setChecked] = useState([true, false]);
+  const [checked, setChecked] = useState([false, false]);
+  const [UserList, setUsersList] = useState("");
+  const [subUserList, setSubUsersList] = useState("");
 
   const handleChangeCheckBox = (event) => {
     setChecked([event.target.checked, event.target.checked]);
   };
 
-  const handleChange = (event) =>{
-    setChecked({
-      ...checked,
-      [event.target.checked]: event.target.checked,
-    })
-  }
+  const handleChange1 = (event) => {
+    setChecked([event.target.checked, checked[1]]);
+    setUsersList(event.target.name);
+  };
+
+  const handleChange2 = (event) => {
+    setChecked([checked[0], event.target.checked]);
+    setSubUsersList(event.target.name);
+  };
 
   const children = (
     <Box sx={{ display: 'flex', flexDirection: 'row', ml: 3 }}>
       <FormControlLabel
+        name="userList"
         label="User List"
-        control={<Checkbox checked={checked[0]} onChange={handleChange} />}
+        control={<Checkbox checked={checked[0]} onChange={handleChange1} />}
       />
       <FormControlLabel
+        name="subUser"
         label="SubUser List"
-        control={<Checkbox checked={checked[1]} onChange={handleChange} />}
+        control={<Checkbox checked={checked[1]} onChange={handleChange2} />}
       />
     </Box>
   );
@@ -424,8 +431,7 @@ function userList() {
                 control={
                 <Checkbox
                 checked={checked[0] && checked[1]}
-                indeterminate={checked[0] !== checked[1]}
-                 onChange={handleChangeCheckBox}
+                onChange={handleChangeCheckBox}
                 />
                 }
                  />
