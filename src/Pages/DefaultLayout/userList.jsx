@@ -34,6 +34,7 @@ function userList() {
   const { control, getValues, setValue, handleSubmit, reset } = useForm({
     mode: "onChange",
     defaultValues: {
+      id:"",
       firstName: "",
       lastName: "",
       password: "",
@@ -95,8 +96,9 @@ function userList() {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     const userId = id;
+    console.log('userId@@', userId)
     if(userId === ""){
       createUser();
     }
@@ -105,6 +107,8 @@ function userList() {
     }
     return reset();
   };
+
+  console.log('id', id);
 
   const createUser = async () => {
     const userDetails = {
@@ -130,7 +134,7 @@ function userList() {
     })
   };
 
-  const updateUserData = async () => {
+  const updateUserData = async (e) => {
     const userDetails = {
       id: getValues()._id,
       firstName: getValues().firstName,
@@ -147,10 +151,12 @@ function userList() {
         }
         getUser();
         reset();
+        setId("");
         handleDialogeClose();
       })
   };
 
+ 
   const columns = [
     { field: "firstName", headerName: "First name", width: 130 },
     { field: "lastName", headerName: "Last name", width: 130 },

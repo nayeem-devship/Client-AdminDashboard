@@ -26,7 +26,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "./UserList.css";
 
-function subUserList() {
+function userList() {
   const [userList, setUserList] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [id, setId] = useState("");
@@ -34,6 +34,7 @@ function subUserList() {
   const { control, getValues, setValue, handleSubmit, reset } = useForm({
     mode: "onChange",
     defaultValues: {
+      id:"",
       firstName: "",
       lastName: "",
       password: "",
@@ -57,7 +58,7 @@ function subUserList() {
   }, []);
 
   const getUser = async () => {
-    await Api.get(`/subUsers/getSubUser`)
+    await Api.get(`/subUser/getSubUser`)
       .then((res) => {
         setUserList(res.data.data);
       })
@@ -65,7 +66,7 @@ function subUserList() {
   };
 
   const deleteUserData = async (id) => {
-    await Api.delete(`/subUsers/deleteSubUser/${id}`)
+    await Api.delete(`/subUser/deleteSubUser/${id}`)
       .then((res) => {
         console.log("res", res.data);
         if (response.status === 200) {
@@ -95,8 +96,9 @@ function subUserList() {
   };
 
   const onSubmit = (data) => {
-    console.log(data);
+    // console.log(data);
     const userId = id;
+    console.log('userId@@', userId)
     if(userId === ""){
       createUser();
     }
@@ -105,6 +107,8 @@ function subUserList() {
     }
     return reset();
   };
+
+  console.log('id', id);
 
   const createUser = async () => {
     const userDetails = {
@@ -115,7 +119,7 @@ function subUserList() {
       userName: getValues().userName,
       status: getValues().status,
     };
-    await Api.post(`subUsers/addSubUser`, userDetails).then((response) => {
+    await Api.post(`subUser/addSubUser`, userDetails).then((response) => {
       if (response.status === 200) {
         toast.success("User Added Successfully");
       }
@@ -130,7 +134,7 @@ function subUserList() {
     })
   };
 
-  const updateUserData = async () => {
+  const updateUserData = async (e) => {
     const userDetails = {
       id: getValues()._id,
       firstName: getValues().firstName,
@@ -140,13 +144,14 @@ function subUserList() {
       userName: getValues().userName,
       status: getValues().status,
     };
-    await Api.put(`subUsers/updateSubUser/${id}`, userDetails)
+    await Api.put(`subUser/updateSubUser/${id}`, userDetails)
       .then((response) => {
         if (response.status === 200) {
           toast.success("Updated Successfully");
         }
         getUser();
         reset();
+        setId("");
         handleDialogeClose();
       })
   };
@@ -402,7 +407,10 @@ function subUserList() {
                 <Button
                   size="small"
                   variant="contained"
-                  onClick={() => handleDialogeClose()}
+                  onClick={() => {
+                    handleDialogeClose();
+                    setId("");
+                    }}
                 >
                   Cancel
                 </Button>
@@ -433,4 +441,4 @@ function subUserList() {
   );
 }
 
-export default subUserList;
+export default userList;

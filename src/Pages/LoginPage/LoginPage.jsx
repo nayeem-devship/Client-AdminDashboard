@@ -45,7 +45,7 @@ function LoginPage() {
       userName: getValues().userName,
       password: getValues().password,
     };
-    await Api.post(`user/login`, userDetails)
+    await Api.post(`auth/login`, userDetails)
       .then((response) => {
         if (response.status === 200) {
           toast.success("User Login Successfully");
