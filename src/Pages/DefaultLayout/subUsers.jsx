@@ -2,11 +2,13 @@ import {
   Box,
   Button,
   Card,
+  Checkbox,
   Dialog,
   DialogContent,
   DialogTitle,
   Divider,
   FormControl,
+  FormControlLabel,
   IconButton,
   InputLabel,
   MenuItem,
@@ -30,11 +32,36 @@ function userList() {
   const [userList, setUserList] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [id, setId] = useState("");
+  const [checked, setChecked] = useState([true, false]);
+
+  const handleChangeCheckBox = (event) => {
+    setChecked([event.target.checked, event.target.checked]);
+  };
+
+  const handleChange = (event) =>{
+    setChecked({
+      ...checked,
+      [event.target.checked]: event.target.checked,
+    })
+  }
+
+  const children = (
+    <Box sx={{ display: 'flex', flexDirection: 'row', ml: 3 }}>
+      <FormControlLabel
+        label="User List"
+        control={<Checkbox checked={checked[0]} onChange={handleChange} />}
+      />
+      <FormControlLabel
+        label="SubUser List"
+        control={<Checkbox checked={checked[1]} onChange={handleChange} />}
+      />
+    </Box>
+  );
 
   const { control, getValues, setValue, handleSubmit, reset } = useForm({
     mode: "onChange",
     defaultValues: {
-      id:"",
+      id: "",
       firstName: "",
       lastName: "",
       password: "",
@@ -98,17 +125,16 @@ function userList() {
   const onSubmit = (data) => {
     // console.log(data);
     const userId = id;
-    console.log('userId@@', userId)
-    if(userId === ""){
+    console.log("userId@@", userId);
+    if (userId === "") {
       createUser();
-    }
-    else{
+    } else {
       updateUserData();
     }
     return reset();
   };
 
-  console.log('id', id);
+  console.log("id", id);
 
   const createUser = async () => {
     const userDetails = {
@@ -119,19 +145,20 @@ function userList() {
       userName: getValues().userName,
       status: getValues().status,
     };
-    await Api.post(`subUser/addSubUser`, userDetails).then((response) => {
-      if (response.status === 200) {
-        toast.success("User Added Successfully");
-      }
-      handleDialogeClose();
-      reset();
-      getUser();
-    })
-    .catch((err) => {
-      if(err.response.status === 409){
-        toast.error("User Already Exist");
-      }
-    })
+    await Api.post(`subUser/addSubUser`, userDetails)
+      .then((response) => {
+        if (response.status === 200) {
+          toast.success("User Added Successfully");
+        }
+        handleDialogeClose();
+        reset();
+        getUser();
+      })
+      .catch((err) => {
+        if (err.response.status === 409) {
+          toast.error("User Already Exist");
+        }
+      });
   };
 
   const updateUserData = async (e) => {
@@ -144,8 +171,8 @@ function userList() {
       userName: getValues().userName,
       status: getValues().status,
     };
-    await Api.put(`subUser/updateSubUser/${id}`, userDetails)
-      .then((response) => {
+    await Api.put(`subUser/updateSubUser/${id}`, userDetails).then(
+      (response) => {
         if (response.status === 200) {
           toast.success("Updated Successfully");
         }
@@ -153,10 +180,10 @@ function userList() {
         reset();
         setId("");
         handleDialogeClose();
-      })
+      }
+    );
   };
 
- 
   const columns = [
     { field: "firstName", headerName: "First name", width: 130 },
     { field: "lastName", headerName: "Last name", width: 130 },
@@ -391,6 +418,19 @@ function userList() {
                     </FormControl>
                   )}
                 />
+                <Box sx={{ display: "flex", flexDirection:"column" }}>
+                <FormControlLabel
+                label="All Menu"
+                control={
+                <Checkbox
+                checked={checked[0] && checked[1]}
+                indeterminate={checked[0] !== checked[1]}
+                 onChange={handleChangeCheckBox}
+                />
+                }
+                 />
+                {children}
+                </Box>
               </DialogContent>
               <Box
                 sx={{
@@ -410,7 +450,7 @@ function userList() {
                   onClick={() => {
                     handleDialogeClose();
                     setId("");
-                    }}
+                  }}
                 >
                   Cancel
                 </Button>
