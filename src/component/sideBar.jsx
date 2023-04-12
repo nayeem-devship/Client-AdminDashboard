@@ -8,7 +8,6 @@ import PropTypes from 'prop-types';
 import "./sideBar.css";
 
 const drawerWidth = 240;
-
 function sideBar(props) {
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
@@ -35,7 +34,6 @@ function sideBar(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <CssBaseline />
-      {/* <NavBar/> */}
       <Drawer
         container={container}
         variant="temporary"
