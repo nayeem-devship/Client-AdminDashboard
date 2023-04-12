@@ -51,6 +51,7 @@ function LoginPage() {
           toast.success("User Login Successfully");
         }
         if (response.data.token) {
+          const role = response.data.data.role;
           const token = response.data.token;
           const userName = response.data.userName;
           const id = response.data.data._id;
@@ -58,6 +59,7 @@ function LoginPage() {
           localStorage.setItem("USER_AUTH_STATE", true);
           localStorage.setItem("user-token", token);
           localStorage.setItem("userName", userName);
+          localStorage.setItem("role", role)
           localStorage.setItem("id", id);
 
           navigate(`/admin/userList`);

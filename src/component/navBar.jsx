@@ -34,6 +34,7 @@ export default function navBar() {
     e.preventDefault();
     localStorage.removeItem("USER_AUTH_STATE");
     localStorage.removeItem("user-token");
+    localStorage.removeItem("role");
     localStorage.removeItem("userName");
     localStorage.removeItem("id");
     navigate("/")
