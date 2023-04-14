@@ -1,67 +1,85 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
 import * as Icons from "react-icons/fa";
+import { MdDashboard } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
 import "./sideBar.css";
+import Api from "../Api";
 
 const drawerWidth = 240;
-const MenuList = [
-  {
-    id: "1",
-    path: "userList",
-    menuName: "UserList",
-    menuIcon: "FaUserAlt",
-  },
-  {
-    id: "2",
-    path: "subUser",
-    menuName: "SubUserList",
-    menuIcon: "FaUserFriends",
-  },
-];
 
 const DynamicFaIcon = ({ MenuIcon }) => {
   const IconComponent = Icons[MenuIcon];
 
-  if (!IconComponent) { 
+  if (!IconComponent) {
     return <Icons.FaUserAlt />;
   }
 
   return <IconComponent />;
 };
-function sideBar(props) {
+function sideBar(props, { mobileOpen }) {
+  const [menuList, setMenuList] = useState([]);
   const { window } = props;
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const { onChange } = props;
   const role = localStorage.getItem("role");
-  const id = localStorage.getItem("id")
+  const userId = localStorage.getItem("userId");
 
-  console.log("id", id)
+  console.log("id", userId);
 
   console.log("role@@", role);
 
-  const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
+  useEffect(() => {
+    getMenu();
+  }, []);
+
+  const getMenu = async () => {
+    if (role === "user") {
+      await Api.get(`/menu/getMenuByRole/${role}`)
+        .then((res) => {
+          setMenuList(res.data.data);
+        })
+        .catch((err) => console.log(err));
+    } else {
+      await Api.get(`/menu/getMenuById/${userId}`)
+        .then((res) => {
+          setMenuList(res.data.data);
+        })
+        .catch((err) => console.log(err));
+    }
   };
 
   const drawer = (
     <Box sx={{ mt: 10, pl: 1 }}>
-      {MenuList.map((data) => (
-        <Box key={data.id}>
-        <NavLink
-          to={`${data.path}`}
-          className={({ isActive }) =>
-            isActive ? "nav_link active" : "nav_link"
-          }
-        >
-          {" "}
-          <Box sx={{ mx: 2, fontSize:"18px" }}>
-          <DynamicFaIcon MenuIcon={`${data.menuIcon}`} />
-          </Box>
-          <Box>{data.menuName}</Box>
-        </NavLink>
+      <NavLink
+        to="devShip"
+        className={({ isActive }) =>
+          isActive ? "nav_link active" : "nav_link"
+        }
+      >
+        <Box sx={{ mx: 2, fontSize: "20px", display: "flex" }}>
+          <MdDashboard />
+        </Box>
+        <Box> DashBoard</Box>
+      </NavLink>
+      {menuList.map((data) => (
+        <Box key={data._id}>
+          <NavLink
+            to={`${data.path}`}
+            className={({ isActive }) =>
+              isActive ? "nav_link active" : "nav_link"
+            }
+          >
+            {" "}
+            <Box sx={{ mx: 2, fontSize: "18px", display: "flex" }}>
+              <DynamicFaIcon MenuIcon={`${data.menuIcon}`} />
+            </Box>
+            <Box sx={{ fontSize: "18px", display: "flex" }}>
+              {data.menuName}
+            </Box>
+          </NavLink>
         </Box>
       ))}
     </Box>
@@ -76,7 +94,7 @@ function sideBar(props) {
         container={container}
         variant="temporary"
         open={mobileOpen}
-        onClose={handleDrawerToggle}
+        onClose={onChange}
         ModalProps={{
           keepMounted: true,
         }}

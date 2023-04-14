@@ -10,7 +10,8 @@ import MenuItem from "@mui/material/MenuItem";
 import Menu from "@mui/material/Menu";
 import { useNavigate } from "react-router-dom";
 
-export default function navBar() {
+export default function navBar(props) {
+  const {onChange} = props;
   const [anchorEl, setAnchorEl] = React.useState(null);
   const [logout, setLogout] = React.useState(false);
 
@@ -51,6 +52,7 @@ export default function navBar() {
             edge="start"
             color="inherit"
             aria-label="menu"
+            onClick={onChange}
             sx={{ mr: 2, display:{lg:'none', md:'none', sm:'none'} }}
           >
             <MenuIcon />

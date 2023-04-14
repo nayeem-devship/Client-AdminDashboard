@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import NavBar from "../../component/navBar";
 import SideBar from "../../component/sideBar";
 import { Outlet } from "react-router-dom";
@@ -7,12 +7,18 @@ import "../../component/sideBar.css";
 
 function DefaultLayout() {
 
+  const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+
   return (
     <div>
-      <NavBar />
+      <NavBar onChange={handleDrawerToggle}/>
       <Box sx={{backgroundColor: "whitesmoke"}}>
         <div>
-          <SideBar />
+          <SideBar mobileOpen={mobileOpen} onChange={handleDrawerToggle}/>
         </div>
         <div
           className= "main_content open"

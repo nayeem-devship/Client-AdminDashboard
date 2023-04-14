@@ -10,7 +10,7 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<LoginPage/>}/>
-      <Route path="/admin" element={<ProtectedRoute component={DefaultLayout} token={"user-token"}/>}>
+      <Route path="/" element={<ProtectedRoute component={DefaultLayout} token={"user-token"}/>}>
         {AdminRoutes.map(({path, element: Ele}, index) =>(
           <Route key={index} path={path} element={Ele}/>
         ))}

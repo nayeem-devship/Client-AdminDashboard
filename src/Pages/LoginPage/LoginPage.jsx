@@ -55,14 +55,16 @@ function LoginPage() {
           const token = response.data.token;
           const userName = response.data.userName;
           const id = response.data.data._id;
+          const userId = response.data.data.userId;
 
           localStorage.setItem("USER_AUTH_STATE", true);
           localStorage.setItem("user-token", token);
           localStorage.setItem("userName", userName);
           localStorage.setItem("role", role)
           localStorage.setItem("id", id);
+          localStorage.setItem("userId", userId);
 
-          navigate(`/admin/userList`);
+          navigate(`devShip`);
           sessionStorage.setItem("USER_AUTH_STATE", true);
         }
       })
