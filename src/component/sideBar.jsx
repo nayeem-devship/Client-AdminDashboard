@@ -6,6 +6,7 @@ import * as Icons from "react-icons/fa";
 import { MdDashboard } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 import PropTypes from "prop-types";
+import SideBarData from "./sideBarData";
 import "./sideBar.css";
 import Api from "../Api";
 
@@ -21,35 +22,28 @@ const DynamicFaIcon = ({ MenuIcon }) => {
   return <IconComponent />;
 };
 function sideBar(props, { mobileOpen }) {
-  const [menuList, setMenuList] = useState([]);
+  const [subUserdata, setData] = useState([]);
   const { window } = props;
   const { onChange } = props;
   const role = localStorage.getItem("role");
   const userId = localStorage.getItem("userId");
 
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  const getUser = async() =>{
+    await Api.get(`/subUser/getSubUserById/${userId}`).then((res)=>{
+      console.log(res.data.data);
+      setData(res.data.data);
+    })
+  }
+
+  console.log('subUserdata@@@@@', subUserdata);
+
   console.log("id", userId);
 
   console.log("role@@", role);
-
-  useEffect(() => {
-    getMenu();
-  }, []);
-
-  const getMenu = async () => {
-    if (role === "user") {
-      await Api.get(`/menu/getMenuByRole/${role}`)
-        .then((res) => {
-          setMenuList(res.data.data);
-        })
-        .catch((err) => console.log(err));
-    } else {
-      await Api.get(`/menu/getMenuById/${userId}`)
-        .then((res) => {
-          setMenuList(res.data.data);
-        })
-        .catch((err) => console.log(err));
-    }
-  };
 
   const drawer = (
     <Box sx={{ mt: 10, pl: 1 }}>
@@ -62,26 +56,32 @@ function sideBar(props, { mobileOpen }) {
         <Box sx={{ mx: 2, fontSize: "20px", display: "flex" }}>
           <MdDashboard />
         </Box>
-        <Box> DashBoard</Box>
+        <Box>DashBoard</Box>
       </NavLink>
-      {menuList.map((data) => (
-        <Box key={data._id}>
-          <NavLink
-            to={`${data.path}`}
-            className={({ isActive }) =>
-              isActive ? "nav_link active" : "nav_link"
-            }
-          >
-            {" "}
-            <Box sx={{ mx: 2, fontSize: "18px", display: "flex" }}>
-              <DynamicFaIcon MenuIcon={`${data.menuIcon}`} />
-            </Box>
-            <Box sx={{ fontSize: "18px", display: "flex" }}>
-              {data.menuName}
-            </Box>
-          </NavLink>
-        </Box>
-      ))}
+      {role === "user" ? (
+        SideBarData.map((data) => (
+          <Box key={data.id}>
+            <NavLink
+              to={`${data.path}`}
+              className={({ isActive }) =>
+                isActive ? "nav_link active" : "nav_link"
+              }
+            >
+              {" "}
+              <Box sx={{ mx: 2, fontSize: "18px", display: "flex" }}>
+                <DynamicFaIcon MenuIcon={`${data.menuIcon}`} />
+              </Box>
+              <Box sx={{ fontSize: "18px", display: "flex" }}>
+                {data.menuName}
+              </Box>
+            </NavLink>
+          </Box>
+        ))
+      ) : (
+        <>
+          <h5>hfhruh</h5>
+        </>
+      )}
     </Box>
   );
 

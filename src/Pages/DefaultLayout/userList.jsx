@@ -96,7 +96,6 @@ function userList() {
   };
 
   const onSubmit = (data) => {
-    // console.log(data);
     const userId = id;
     console.log('userId@@', userId)
     if(userId === ""){
@@ -114,6 +113,7 @@ function userList() {
     const userDetails = {
       firstName: getValues().firstName,
       lastName: getValues().lastName,
+      email:getValues().email,
       password: getValues().password,
       cnfPassword: getValues().cnfPassword,
       userName: getValues().userName,
@@ -139,6 +139,7 @@ function userList() {
       id: getValues()._id,
       firstName: getValues().firstName,
       lastName: getValues().lastName,
+      email:getValues().email,
       password: getValues().password,
       cnfPassword: getValues().cnfPassword,
       userName: getValues().userName,
@@ -158,8 +159,9 @@ function userList() {
 
  
   const columns = [
-    { field: "firstName", headerName: "First name", width: 130 },
-    { field: "lastName", headerName: "Last name", width: 130 },
+    { field: "firstName", headerName: "First name", width: 120 },
+    { field: "lastName", headerName: "Last name", width: 120 },
+    { field: "email", headerName: "Email", width: 200 },
     { field: "userName", headerName: "UserName", width: 200 },
     {
       field: "status",
@@ -192,6 +194,7 @@ function userList() {
                   setValue("id", params.row._id);
                   setValue("firstName", params.row.firstName);
                   setValue("lastName", params.row.lastName);
+                  setValue("email", params.row.email);
                   setValue("password", params.row.password);
                   setValue("cnfPassword", params.row.cnfPassword);
                   setValue("userName", params.row.userName);
@@ -285,6 +288,29 @@ function userList() {
                     <TextField
                       type="text"
                       label="Last Name"
+                      size="small"
+                      autoFocus
+                      margin="dense"
+                      variant="standard"
+                      required
+                      value={value}
+                      onChange={onChange}
+                      error={!!error}
+                      fullWidth
+                    />
+                  )}
+                />
+                <Controller
+                  name="email"
+                  defaultValue=""
+                  control={control}
+                  render={({
+                    field: { onChange, value },
+                    fieldState: { error },
+                  }) => (
+                    <TextField
+                      type="email"
+                      label="Email"
                       size="small"
                       autoFocus
                       margin="dense"

@@ -26,6 +26,8 @@ import { ToastContainer, toast } from "react-toastify";
 
 function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
+  // const [fieldsType, setFieldsType] = useState("");
+  // const [fieldName, setFieldName] = useState("");
 
   const navigate = useNavigate();
 
@@ -38,11 +40,21 @@ function LoginPage() {
   const onSubmit = (data) => {
     console.log(data);
     handleFormSubmit();
+    // handleChangeFields();
   };
 
-  const handleFormSubmit = async (data) => {
+  // const handleChangeFields = (setValue, e) =>{
+  //   if(fieldsType === "/^[A-Za-z]+$/i"){
+  //     setFieldsType("email");
+  //   }
+  //   else{
+  //     setFieldsType("text");
+  //   }
+  // }
+
+  const handleFormSubmit = async () => {
     const userDetails = {
-      userName: getValues().userName,
+      userName:getValues().userName,
       password: getValues().password,
     };
     await Api.post(`auth/login`, userDetails)
@@ -53,18 +65,17 @@ function LoginPage() {
         if (response.data.token) {
           const role = response.data.data.role;
           const token = response.data.token;
-          const userName = response.data.userName;
+          const userName = response.data.data.userName;
           const id = response.data.data._id;
           const userId = response.data.data.userId;
 
           localStorage.setItem("USER_AUTH_STATE", true);
-          localStorage.setItem("user-token", token);
+          localStorage.setItem("token", token);
           localStorage.setItem("userName", userName);
           localStorage.setItem("role", role)
           localStorage.setItem("id", id);
           localStorage.setItem("userId", userId);
-
-          navigate(`devShip`);
+          navigate(`${role}/devShip`);
           sessionStorage.setItem("USER_AUTH_STATE", true);
         }
       })
@@ -76,6 +87,8 @@ function LoginPage() {
         }
       });
   };
+
+  
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Box className="login_Page">
@@ -124,8 +137,8 @@ function LoginPage() {
               }) => (
                 <TextField
                   sx={{ mb: 4 }}
-                  type="text"
-                  label="UserName"
+                  type="email"
+                  label="UserName & Email"
                   size="small"
                   variant="filled"
                   required

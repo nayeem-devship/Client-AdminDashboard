@@ -29,52 +29,19 @@ import "react-toastify/dist/ReactToastify.css";
 import "./UserList.css";
 
 function userList() {
-  const [userList, setUserList] = useState([]);
+  const [subUserList, setSubUserList] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [id, setId] = useState("");
-  const [checked, setChecked] = useState([false, false]);
-  const [UserList, setUsersList] = useState("");
-  const [subUserList, setSubUsersList] = useState("");
+  const [state, setState] = useState({
+    UserList: false,
+    SubUserList: false,
+  });
+
+  const {UserList, SubUserList} = state;
 
   console.log('UserList', UserList);
+  console.log('SubUserList', SubUserList)
 
-  console.log('subUserList', subUserList);
-
-  const UserListId = "6437a4113d451bb041726791";
-  const SubUserListId = "6437a46d3d451bb041726793";
-
-  console.log('checked', checked);
-
-  const handleChangeCheckBox = (event) => {
-    setChecked([event.target.checked, event.target.checked]);
-  };
-
-  const handleChange1 = (event) => {
-    setChecked([event.target.checked, checked[1]]);
-    // setUsersList(checked[1]);
-  };
-
-  const handleChange2 = (event) => {
-    setChecked([checked[0], event.target.checked]);
-    // setSubUsersList(SubUserListId);
-  };
-
-  const children = (
-    <Box sx={{ display: 'flex', flexDirection: 'row', ml: 3 }}>
-      <FormControlLabel
-        name="userList"
-        label="User List"
-        // value={UserListId}
-        control={<Checkbox checked={checked[0]} onChange={handleChange1} />}
-      />
-      <FormControlLabel
-        name="subUser"
-        label="SubUser List"
-        // value={SubUserListId}
-        control={<Checkbox checked={checked[1]} onChange={handleChange2} />}
-      />
-    </Box>
-  );
+  const [id, setId] = useState("");
 
   const { control, getValues, setValue, handleSubmit, reset } = useForm({
     mode: "onChange",
@@ -105,15 +72,15 @@ function userList() {
   const getUser = async () => {
     await Api.get(`/subUser/getSubUser`)
       .then((res) => {
-        setUserList(res.data.data);
+        setSubUserList(res.data.data);
       })
       .catch((err) => console.log(err));
   };
 
   const deleteUserData = async (id) => {
     await Api.delete(`/subUser/deleteSubUser/${id}`)
-      .then((res) => {
-        console.log("res", res.data);
+      .then((response) => {
+        console.log("response", response.data);
         if (response.status === 200) {
           toast.success("User Deleted Successfully");
         }
@@ -141,7 +108,7 @@ function userList() {
   };
 
   const onSubmit = (data) => {
-    // console.log(data);
+    console.log(data);
     const userId = id;
     console.log("userId@@", userId);
     if (userId === "") {
@@ -158,10 +125,13 @@ function userList() {
     const userDetails = {
       firstName: getValues().firstName,
       lastName: getValues().lastName,
+      email: getValues().email,
       password: getValues().password,
       cnfPassword: getValues().cnfPassword,
       userName: getValues().userName,
       status: getValues().status,
+      UserList:UserList,
+      SubUserList:SubUserList
     };
     await Api.post(`subUser/addSubUser`, userDetails)
       .then((response) => {
@@ -171,6 +141,7 @@ function userList() {
         handleDialogeClose();
         reset();
         getUser();
+        setState(false)
       })
       .catch((err) => {
         if (err.response.status === 409) {
@@ -184,10 +155,13 @@ function userList() {
       id: getValues()._id,
       firstName: getValues().firstName,
       lastName: getValues().lastName,
+      email:getValues().email,
       password: getValues().password,
       cnfPassword: getValues().cnfPassword,
       userName: getValues().userName,
       status: getValues().status,
+      UserList:UserList,
+      SubUserList:SubUserList
     };
     await Api.put(`subUser/updateSubUser/${id}`, userDetails).then(
       (response) => {
@@ -203,8 +177,9 @@ function userList() {
   };
 
   const columns = [
-    { field: "firstName", headerName: "First name", width: 130 },
-    { field: "lastName", headerName: "Last name", width: 130 },
+    { field: "firstName", headerName: "First name", width: 120 },
+    { field: "lastName", headerName: "Last name", width: 120 },
+    {field: "email", headerName: "Email", width: 200},
     { field: "userName", headerName: "UserName", width: 200 },
     {
       field: "status",
@@ -237,6 +212,7 @@ function userList() {
                   setValue("id", params.row._id);
                   setValue("firstName", params.row.firstName);
                   setValue("lastName", params.row.lastName);
+                  setValue("email",params.row.email);
                   setValue("password", params.row.password);
                   setValue("cnfPassword", params.row.cnfPassword);
                   setValue("userName", params.row.userName);
@@ -263,6 +239,13 @@ function userList() {
       },
     },
   ];
+
+  const handleChange = (event) => {
+    setState({
+      ...state,
+      [event.target.name]: event.target.checked,
+    });
+  };
 
   return (
     <div>
@@ -330,6 +313,29 @@ function userList() {
                     <TextField
                       type="text"
                       label="Last Name"
+                      size="small"
+                      autoFocus
+                      margin="dense"
+                      variant="standard"
+                      required
+                      value={value}
+                      onChange={onChange}
+                      error={!!error}
+                      fullWidth
+                    />
+                  )}
+                />
+                <Controller
+                  name="email"
+                  defaultValue=""
+                  control={control}
+                  render={({
+                    field: { onChange, value },
+                    fieldState: { error },
+                  }) => (
+                    <TextField
+                      type="email"
+                      label="Email"
                       size="small"
                       autoFocus
                       margin="dense"
@@ -436,18 +442,19 @@ function userList() {
                     </FormControl>
                   )}
                 />
-                <Box sx={{ display: "flex", flexDirection:"column" }}>
+                <Box sx={{ display: "flex", flexDirection:"row" }}>
                 <FormControlLabel
-                label="All Menu"
-                control={
-                <Checkbox
-                checked={checked[0] && checked[1]}
-                indeterminate={checked[0] !== checked[1]}
-                onChange={handleChangeCheckBox}
+                  control={
+                  <Checkbox checked={UserList} onChange={handleChange} name="UserList" />
+                  }
+                label="UserList"
                 />
-                }
-                 />
-                {children}
+                <FormControlLabel
+                  control={
+                  <Checkbox checked={SubUserList} onChange={handleChange} name="SubUserList" />
+                  }
+                label="SubUserList"
+                />
                 </Box>
               </DialogContent>
               <Box
@@ -478,7 +485,7 @@ function userList() {
         </div>
 
         <DataGrid
-          rows={userList}
+          rows={subUserList}
           columns={columns}
           getRowId={(row) => row._id}
           initialState={{
