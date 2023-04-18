@@ -32,14 +32,16 @@ function userList() {
   const [subUserList, setSubUserList] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [state, setState] = useState({
-    UserList: false,
-    SubUserList: false,
+    UserList: "",
+    SubUserList: "",
+    teams: "",
   });
 
-  const {UserList, SubUserList} = state;
+  const { UserList, SubUserList, teams } = state;
 
-  console.log('UserList', UserList);
-  console.log('SubUserList', SubUserList)
+  console.log("UserList", UserList);
+  console.log("SubUserList", SubUserList);
+  console.log("teams", teams);
 
   const [id, setId] = useState("");
 
@@ -130,8 +132,9 @@ function userList() {
       cnfPassword: getValues().cnfPassword,
       userName: getValues().userName,
       status: getValues().status,
-      UserList:UserList,
-      SubUserList:SubUserList
+      UserList: UserList,
+      SubUserList: SubUserList,
+      teams: teams,
     };
     await Api.post(`subUser/addSubUser`, userDetails)
       .then((response) => {
@@ -141,7 +144,7 @@ function userList() {
         handleDialogeClose();
         reset();
         getUser();
-        setState(false)
+        setState(false);
       })
       .catch((err) => {
         if (err.response.status === 409) {
@@ -150,18 +153,19 @@ function userList() {
       });
   };
 
-  const updateUserData = async (e) => {
+  const updateUserData = async (data) => {
     const userDetails = {
       id: getValues()._id,
       firstName: getValues().firstName,
       lastName: getValues().lastName,
-      email:getValues().email,
+      email: getValues().email,
       password: getValues().password,
       cnfPassword: getValues().cnfPassword,
       userName: getValues().userName,
       status: getValues().status,
-      UserList:UserList,
-      SubUserList:SubUserList
+      UserList: getValues().UserList,
+      SubUserList: getValues().SubUserList,
+      teams: getValues().teams,
     };
     await Api.put(`subUser/updateSubUser/${id}`, userDetails).then(
       (response) => {
@@ -179,12 +183,12 @@ function userList() {
   const columns = [
     { field: "firstName", headerName: "First name", width: 120 },
     { field: "lastName", headerName: "Last name", width: 120 },
-    {field: "email", headerName: "Email", width: 200},
+    { field: "email", headerName: "Email", width: 200 },
     { field: "userName", headerName: "UserName", width: 200 },
     {
       field: "status",
       headerName: "Status",
-      width: 200,
+      width: 120,
       courser: "pointer",
       renderCell: (params) => {
         const data = params.row.status;
@@ -212,7 +216,7 @@ function userList() {
                   setValue("id", params.row._id);
                   setValue("firstName", params.row.firstName);
                   setValue("lastName", params.row.lastName);
-                  setValue("email",params.row.email);
+                  setValue("email", params.row.email);
                   setValue("password", params.row.password);
                   setValue("cnfPassword", params.row.cnfPassword);
                   setValue("userName", params.row.userName);
@@ -442,19 +446,37 @@ function userList() {
                     </FormControl>
                   )}
                 />
-                <Box sx={{ display: "flex", flexDirection:"row" }}>
-                <FormControlLabel
-                  control={
-                  <Checkbox checked={UserList} onChange={handleChange} name="UserList" />
-                  }
-                label="UserList"
-                />
-                <FormControlLabel
-                  control={
-                  <Checkbox checked={SubUserList} onChange={handleChange} name="SubUserList" />
-                  }
-                label="SubUserList"
-                />
+                <Box sx={{ display: "flex", flexDirection: "row" }}>
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={UserList}
+                        onChange={handleChange}
+                        name="UserList"
+                      />
+                    }
+                    label="UserList"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={SubUserList}
+                        onChange={handleChange}
+                        name="SubUserList"
+                      />
+                    }
+                    label="SubUserList"
+                  />
+                  <FormControlLabel
+                    control={
+                      <Checkbox
+                        checked={teams}
+                        onChange={handleChange}
+                        name="teams"
+                      />
+                    }
+                    label="Teams"
+                  />
                 </Box>
               </DialogContent>
               <Box

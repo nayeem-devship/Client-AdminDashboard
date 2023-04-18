@@ -166,7 +166,7 @@ function userList() {
     {
       field: "status",
       headerName: "Status",
-      width: 200,
+      width: 120,
       courser: "pointer",
       renderCell: (params) => {
         const data = params.row.status;

@@ -137,7 +137,7 @@ function LoginPage() {
               }) => (
                 <TextField
                   sx={{ mb: 4 }}
-                  type="email"
+                  type="text"
                   label="UserName & Email"
                   size="small"
                   variant="filled"

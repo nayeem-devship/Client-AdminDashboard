@@ -22,7 +22,9 @@ const DynamicFaIcon = ({ MenuIcon }) => {
   return <IconComponent />;
 };
 function sideBar(props, { mobileOpen }) {
-  const [subUserdata, setData] = useState([]);
+  const [userList, setUserList] = useState(false);
+  const [SubUserList, setSubUserList] = useState(false);
+  const [teams, setTeams] = useState(false);
   const { window } = props;
   const { onChange } = props;
   const role = localStorage.getItem("role");
@@ -32,14 +34,17 @@ function sideBar(props, { mobileOpen }) {
     getUser();
   }, []);
 
-  const getUser = async() =>{
-    await Api.get(`/subUser/getSubUserById/${userId}`).then((res)=>{
+  const getUser = async () => {
+    await Api.get(`/subUser/getSubUserById/${userId}`).then((res) => {
       console.log(res.data.data);
-      setData(res.data.data);
-    })
-  }
+      setUserList(res.data.data.UserList);
+      setSubUserList(res.data.data.SubUserList);
+      setTeams(res.data.data.teams);
+    });
+  };
 
-  console.log('subUserdata@@@@@', subUserdata);
+  console.log("subUserdata@@@@@", userList);
+  console.log("subUserdat", SubUserList);
 
   console.log("id", userId);
 
@@ -79,7 +84,62 @@ function sideBar(props, { mobileOpen }) {
         ))
       ) : (
         <>
-          <h5>hfhruh</h5>
+          {userList ? (
+            <NavLink
+              to={"userList"}
+              className={({ isActive }) =>
+                isActive ? "nav_link active" : "nav_link"
+              }
+            >
+              {" "}
+              <Box sx={{ mx: 2, fontSize: "18px", display: "flex" }}>
+                <Icons.FaUserAlt />
+              </Box>
+              <Box sx={{ fontSize: "18px", display: "flex" }}>UserList</Box>
+            </NavLink>
+          ) : (
+            <></>
+          )}
+          <>
+            {SubUserList ? (
+              <NavLink
+                to={"subUser"}
+                className={({ isActive }) =>
+                  isActive ? "nav_link active" : "nav_link"
+                }
+              >
+                {" "}
+                <Box sx={{ mx: 2, fontSize: "18px", display: "flex" }}>
+                  <Icons.FaUserFriends />
+                </Box>
+                <Box sx={{ fontSize: "18px", display: "flex" }}>
+                  SubUserList
+                </Box>
+              </NavLink>
+            ) : (
+              <></>
+            )}
+          </>
+          <>
+            {teams ? (
+              <NavLink
+                to={"teams"}
+                className={({ isActive }) =>
+                  isActive ? "nav_link active" : "nav_link"
+                }
+              >
+                {" "}
+                <Box sx={{ mx: 2, fontSize: "18px", display: "flex" }}>
+                  <Icons.FaTeamspeak />
+                </Box>
+                <Box sx={{ fontSize: "18px", display: "flex" }}>
+                  Teams
+                </Box>
+              </NavLink>
+            ) : (
+              <></>
+            )}
+          </>
         </>
       )}
     </Box>
