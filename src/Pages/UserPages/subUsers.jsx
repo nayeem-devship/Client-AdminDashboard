@@ -31,13 +31,10 @@ import "./UserList.css";
 function userList() {
   const [subUserList, setSubUserList] = useState([]);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [state, setState] = useState({
-    UserList: "",
-    SubUserList: "",
-    teams: "",
-  });
 
-  const { UserList, SubUserList, teams } = state;
+  const [UserList, setUserList] = useState(false);
+  const [SubUserList, setSubuserList] = useState(false);
+  const [teams, setTeams] = useState(false);
 
   console.log("UserList", UserList);
   console.log("SubUserList", SubUserList);
@@ -51,6 +48,7 @@ function userList() {
       id: "",
       firstName: "",
       lastName: "",
+      email: "",
       password: "",
       cnfPassword: "",
       userName: "",
@@ -163,9 +161,9 @@ function userList() {
       cnfPassword: getValues().cnfPassword,
       userName: getValues().userName,
       status: getValues().status,
-      UserList: getValues().UserList,
-      SubUserList: getValues().SubUserList,
-      teams: getValues().teams,
+      UserList: UserList,
+      SubUserList: SubUserList,
+      teams: teams,
     };
     await Api.put(`subUser/updateSubUser/${id}`, userDetails).then(
       (response) => {
@@ -221,6 +219,9 @@ function userList() {
                   setValue("cnfPassword", params.row.cnfPassword);
                   setValue("userName", params.row.userName);
                   setValue("status", params.row.status);
+                  setUserList(params.row.UserList);
+                  setSubuserList(params.row.SubUserList);
+                  setTeams(params.row.teams);
                   handleDialogeOpen();
                 }}
               >
@@ -244,11 +245,16 @@ function userList() {
     },
   ];
 
-  const handleChange = (event) => {
-    setState({
-      ...state,
-      [event.target.name]: event.target.checked,
-    });
+  const handleChange1 = (event) => {
+    setUserList(event.target.checked);
+  };
+
+  const handleChange2 = (event) => {
+    setSubuserList(event.target.checked);
+  };
+
+  const handleChange3 = (event) => {
+    setTeams(event.target.checked);
   };
 
   return (
@@ -451,7 +457,7 @@ function userList() {
                     control={
                       <Checkbox
                         checked={UserList}
-                        onChange={handleChange}
+                        onChange={handleChange1}
                         name="UserList"
                       />
                     }
@@ -461,7 +467,7 @@ function userList() {
                     control={
                       <Checkbox
                         checked={SubUserList}
-                        onChange={handleChange}
+                        onChange={handleChange2}
                         name="SubUserList"
                       />
                     }
@@ -471,7 +477,7 @@ function userList() {
                     control={
                       <Checkbox
                         checked={teams}
-                        onChange={handleChange}
+                        onChange={handleChange3}
                         name="teams"
                       />
                     }

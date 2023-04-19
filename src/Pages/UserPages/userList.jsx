@@ -37,6 +37,7 @@ function userList() {
       id:"",
       firstName: "",
       lastName: "",
+      email:"",
       password: "",
       cnfPassword: "",
       userName: "",

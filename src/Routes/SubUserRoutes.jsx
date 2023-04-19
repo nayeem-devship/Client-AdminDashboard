@@ -1,7 +1,7 @@
 import React from "react";
-import SubUsers from "../Pages/DefaultLayout/subUsers";
+import SubUsers from "../Pages/UserPages/subUsers";
 import DashBoard from "../Pages/DefaultLayout/dashBoard";
-import Teams from "../Pages/DefaultLayout/teams";
+import Teams from "../Pages/UserPages/teams";
 
 const subUserRoutes = [
     {
@@ -10,11 +10,13 @@ const subUserRoutes = [
         element:<DashBoard/>
     },
     {
+        role:["subUser","user"],
         path:"subUser",
         name:"SubUser",
         element:<SubUsers/>
     },
     {
+        role:["subUser","user"],
         path:"teams",
         name:"teams",
         element:<Teams/>

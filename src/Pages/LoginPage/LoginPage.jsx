@@ -43,7 +43,7 @@ function LoginPage() {
     // handleChangeFields();
   };
 
-  // const handleChangeFields = (setValue, e) =>{
+  // const handleChangeFields = (e) =>{
   //   if(fieldsType === "/^[A-Za-z]+$/i"){
   //     setFieldsType("email");
   //   }
